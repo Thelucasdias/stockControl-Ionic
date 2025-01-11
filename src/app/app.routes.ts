@@ -18,8 +18,5 @@ export const routes: Routes = [
     path: 'new-user',
     loadComponent: () => import('./new-user/new-user.page').then( m => m.NewUserPage)
   },
-  {
-    path: 'teste',
-    loadComponent: () => import('./teste/teste.page').then( m => m.TestePage)
-  },
+  
 ];

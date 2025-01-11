@@ -5,7 +5,7 @@
   </ion-item>
   <ion-text color="danger" *ngIf="formGroup.get('fullName')?.touched && formGroup.get('fullName')?.invalid">
     <p *ngIf="formGroup.get('fullName')?.errors?.['required']">Nome é obrigatório.</p>
-    <p *ngIf="formGroup.get('fullName')?.errors?.['minlength']">Nome deve ter pelo menos 3 caracteres.</p>
+    <p *ngIf="formGroup.get('fullName')?.errors?.['minlength']">Digite seu nome</p>
   </ion-text>
 
   <ion-item>
@@ -23,7 +23,7 @@
   </ion-item>
   <ion-text color="danger" *ngIf="formGroup.get('phoneNumber')?.touched && formGroup.get('phoneNumber')?.invalid">
     <p *ngIf="formGroup.get('phoneNumber')?.errors?.['required']">Número de telefone é obrigatório.</p>
-    <p *ngIf="formGroup.get('phoneNumber')?.errors?.['pattern']">Informe um número de telefone válido (10 a 15 dígitos).</p>
+    <p *ngIf="formGroup.get('phoneNumber')?.errors?.['pattern']">Informe um número de telefone válido</p>
   </ion-text>
 
   <ion-item>
@@ -32,7 +32,7 @@
   </ion-item>
   <ion-text color="danger" *ngIf="formGroup.get('password')?.touched && formGroup.get('password')?.invalid">
     <p *ngIf="formGroup.get('password')?.errors?.['required']">Senha é obrigatória.</p>
-    <p *ngIf="formGroup.get('password')?.errors?.['minlength']">A senha deve ter pelo menos 6 caracteres.</p>
+    <p *ngIf="formGroup.get('password')?.errors?.['minlength']">A senha deve ter pelo menos 6 caracteres</p>
   </ion-text>
 
   <ion-item>
@@ -40,7 +40,6 @@
     <ion-input type="password" formControlName="confirmPassword"></ion-input>
   </ion-item>
   <ion-text color="danger" *ngIf="formGroup.get('confirmPassword')?.touched && formGroup.get('confirmPassword')?.invalid">
-    <p *ngIf="formGroup.get('confirmPassword')?.errors?.['required']">Confirmação de senha é obrigatória.</p>
-    <p *ngIf="formGroup.errors?.['mismatch']">As senhas não coincidem.</p>
+    <p *ngIf="formGroup.get('confirmPassword')?.errors?.['mismatch']">As senhas não coincidem</p>
   </ion-text>
 </div>

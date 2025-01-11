@@ -19,7 +19,7 @@ export class NewUserPage implements OnInit {
 
   ngOnInit() {
     this.newUserForm = this.fb.group({
-      fullName: ['', [Validators.required, Validators.minLength(3)]],
+      fullName: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
@@ -28,10 +28,27 @@ export class NewUserPage implements OnInit {
   }
 
   matchPasswords(group: FormGroup) {
-    const password = group.get('password')?.value;
-    const confirmPassword = group.get('confirmPassword')?.value;
-    return password === confirmPassword ? null : { mismatch: true };
+    const password = group.get('password');
+    const confirmPassword = group.get('confirmPassword');
+  
+    if (password && confirmPassword) {
+      const mismatch = password.value !== confirmPassword.value;
+      if (mismatch) {
+        confirmPassword.setErrors({ mismatch: true });
+      } else {
+        const errors = confirmPassword.errors;
+        if (errors) {
+          delete errors['mismatch'];
+          if (Object.keys(errors).length === 0) {
+            confirmPassword.setErrors(null);
+          }
+        }
+      }
+    }
+  
+    return null;
   }
+  
 
   onSubmit() {
     if (this.newUserForm.valid) {
