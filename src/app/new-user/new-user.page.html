@@ -3,37 +3,10 @@
     <ion-title>Cadastro</ion-title>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-item>
-    <ion-label position="floating">Nome Completo</ion-label>
-    <ion-input type="text" formControlName="fullName"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="floating">E-mail</ion-label>
-    <ion-input type="email" formControlName="email"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="floating">Senha</ion-label>
-    <ion-input type="password" formControlName="password"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="floating">Confirmar Senha</ion-label>
-    <ion-input type="password" formControlName="confirmPassword"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="floating">Número de Telefone</ion-label>
-    <ion-input type="tel" formControlName="phoneNumber"></ion-input>
-  </ion-item>
-
-  <ion-button expand="block" class="newUser-button">Cadastrar</ion-button>
+  <form [formGroup]="newUserForm" (ngSubmit)="onSubmit()">
+    <app-user-form [formGroup]="newUserForm"></app-user-form>
+    <ion-button expand="block" class="newUser-button" type="submit">Cadastrar</ion-button>
+  </form>
 </ion-content>
