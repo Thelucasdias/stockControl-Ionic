@@ -4,6 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UserFormComponent } from '../shared/user-form/user-form.component';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-new-user',
@@ -15,7 +16,7 @@ import { UserFormComponent } from '../shared/user-form/user-form.component';
 export class NewUserPage implements OnInit {
   newUserForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private toastController: ToastController) { }
 
   ngOnInit() {
     this.newUserForm = this.fb.group({
@@ -30,7 +31,7 @@ export class NewUserPage implements OnInit {
   matchPasswords(group: FormGroup) {
     const password = group.get('password');
     const confirmPassword = group.get('confirmPassword');
-  
+
     if (password && confirmPassword) {
       const mismatch = password.value !== confirmPassword.value;
       if (mismatch) {
@@ -45,16 +46,29 @@ export class NewUserPage implements OnInit {
         }
       }
     }
-  
+
     return null;
   }
-  
+
 
   onSubmit() {
     if (this.newUserForm.valid) {
-      console.log('Form Submitted', this.newUserForm.value);
+      const formData = this.newUserForm.value;
+      const formDataJson = JSON.stringify(formData);
+      localStorage.setItem('dadosCadastro', formDataJson);
+      this.presentToast('Cadastro realizado com sucesso!');
+      console.log('Usuário criado com sucesso!')
+      console.log(localStorage.getItem('dadosCadastro'));
     } else {
-      console.log('Form is invalid');
+      console.log('Formulário inválido!');
     }
   }
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000
+    });
+    toast.present();
+  }
 }
+

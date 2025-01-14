@@ -1,36 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastController } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   templateUrl: 'login.page.html',
   styleUrls: ['login.page.scss'],
   standalone: true,
-  imports: [IonicModule, ReactiveFormsModule],
+  imports: [IonicModule, ReactiveFormsModule, CommonModule],
 })
-export class LoginPage {
+export class LoginPage implements OnInit {
 
-  loginForm: FormGroup;
+  loginForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
-  this.loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-  });  
+  constructor(private fb: FormBuilder, private toastController: ToastController) {
   }
-  get email() {
-    return this.loginForm.get('email');
-  }
-
-  get password() {
-    return this.loginForm.get('password');
+  ngOnInit() {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+    });
   }
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log(this.loginForm.value);
-    } else {
-      console.log("Invalid Form", this.loginForm.errors)
+      const formValue = this.loginForm.value;
+      const storedData = JSON.parse(localStorage.getItem('dadosCadastro') || '{}')
+      if (formValue.email === storedData.email && formValue.password === storedData.password) {
+        this.presentToast('Login bem sucedido!')
+      } else {
+        this.presentToast('Senha ou email incorretos!')
+      }
     }
   }
-}
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000,
+    });
+    toast.present()
+  }
+
+};
+
+
+
