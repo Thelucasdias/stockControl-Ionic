@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -26,14 +25,21 @@ export class LoginPage implements OnInit {
   onSubmit() {
     if (this.loginForm.valid) {
       const formValue = this.loginForm.value;
-      const storedData = JSON.parse(localStorage.getItem('dadosCadastro') || '{}')
-      if (formValue.email === storedData.email && formValue.password === storedData.password) {
-        this.presentToast('Login bem sucedido!')
+      const storedData = JSON.parse(localStorage.getItem('users') || '{}')
+      const user = storedData.find(
+        (u: any) => u.email === formValue.email && u.password === formValue.password
+      );
+  
+      if (user) {
+        this.presentToast('Login bem-sucedido!');
+        console.log('Usuário logado:', user);
       } else {
-        this.presentToast('Senha ou email incorretos!')
+        this.presentToast('Senha ou email incorretos!');
+        console.log('Tentativa de login com:', formValue);
       }
     }
   }
+  
   async presentToast(message: string) {
     const toast = await this.toastController.create({
       message,

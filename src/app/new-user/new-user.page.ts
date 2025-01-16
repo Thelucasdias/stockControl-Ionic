@@ -24,7 +24,7 @@ export class NewUserPage implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
-      phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10,15}$')]]
+      phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{9,15}$')]]
     }, { validators: this.matchPasswords });
   }
 
@@ -46,29 +46,32 @@ export class NewUserPage implements OnInit {
         }
       }
     }
-
     return null;
   }
-
-
-  onSubmit() {
+  async onSubmit() {
     if (this.newUserForm.valid) {
       const formData = this.newUserForm.value;
-      const formDataJson = JSON.stringify(formData);
-      localStorage.setItem('dadosCadastro', formDataJson);
-      this.presentToast('Cadastro realizado com sucesso!');
-      console.log('Usuário criado com sucesso!')
-      console.log(localStorage.getItem('dadosCadastro'));
+      const { confirmPassword, ...newUser } = formData;
+      const usersData = localStorage.getItem('users');
+      const users = usersData ? JSON.parse(usersData) : [];
+      users.push(newUser);
+      localStorage.setItem('users', JSON.stringify(users));
+      const toast = await this.toastController.create({
+        message: 'Usuário cadastrado com sucesso!',
+        duration: 3000,
+        position: 'top',
+      });
+      await toast.present();
+      window.location.href = 'http://localhost:8100/login';
+      console.log(localStorage.getItem('usersData'));
     } else {
-      console.log('Formulário inválido!');
+      const toast = await this.toastController.create({
+        message: 'Preencha todos os campos corretamente!',
+        duration: 3000,
+        position: 'top',
+      });
+      await toast.present();
     }
-  }
-  async presentToast(message: string) {
-    const toast = await this.toastController.create({
-      message,
-      duration: 3000
-    });
-    toast.present();
   }
 }
 
