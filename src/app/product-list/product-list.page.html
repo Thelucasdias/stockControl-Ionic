@@ -1,0 +1,17 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Produtos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-item>
+    <ion-input  placeholder="Nova categoria"></ion-input>
+  </ion-item>
+  <ion-button expand="full" (click)="addCategory()">Cadastrar Categoria</ion-button>
+  <ion-list>
+    <ion-item *ngFor="let category of categories">
+      <ion-label>{{ category }}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -10,10 +10,7 @@ export const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full',
   },
-  {
-    path: 'home',
-    loadComponent: () => import('./home/home.page').then( m => m.HomePage)
-  },
+  
   {
     path: 'new-user',
     loadComponent: () => import('./new-user/new-user.page').then( m => m.NewUserPage)
@@ -21,6 +18,14 @@ export const routes: Routes = [
   {
     path: 'forgot-password',
     loadComponent: () => import('./forgot-password/forgot-password.page').then( m => m.ForgotPasswordPage)
+  },
+  {
+    path: 'home',
+    loadComponent: () => import('./home/home.page').then( m => m.HomePage)
+  },
+  {
+    path: 'product-list',
+    loadComponent: () => import('./product-list/product-list.page').then( m => m.ProductListPage)
   },
   
 ];
