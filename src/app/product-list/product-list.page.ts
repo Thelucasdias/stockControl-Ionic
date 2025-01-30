@@ -1,30 +1,37 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { InventoryService } from '../services/inventory.service';
+import { Category } from '../models/category.model';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.page.html',
   styleUrls: ['./product-list.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonicModule]
+  imports: [CommonModule, ReactiveFormsModule, IonicModule]
 })
 export class ProductListPage implements OnInit {
+  categories: Category[] = [];
+  newCategory = new FormControl('');
 
-  categories: string[] = [];
-  newCategory: string = '';
-  constructor() { }
+  constructor(private inventoryService: InventoryService) {}
 
   ngOnInit() {
-    const categoriesSave = JSON.parse(localStorage.getItem('categories') || '[]');
-    this.categories = categoriesSave;
+    this.loadCategories();
   }
-  addCategory(){
-    if (this.newCategory.trim()){
-      this.categories.push(this.newCategory.trim());
-      localStorage.setItem('categories', JSON.stringify(this.categories));
-      this.newCategory = '';
+
+  loadCategories() {
+    this.categories = this.inventoryService.getCategories();
+  }
+
+  addCategory() {
+    const categoryName = this.newCategory.value?.trim();
+    if (categoryName) {
+      this.inventoryService.addCategory(categoryName);
+      this.newCategory.reset(); 
+      this.loadCategories();
     }
   }
 }
