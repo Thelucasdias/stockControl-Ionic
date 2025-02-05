@@ -13,27 +13,40 @@ export class InventoryService {
     }
 
     addCategory(name: string) {
-        const newCategory = new Category(Date.now().toString(), name);
+        const newCategory = new Category(Date.now(), name);
         this.categories.push(newCategory);
         this.saveCategories();
     }
-
-    addProduct(categoryId: string, product: Product) {
-        const category = this.categories.find(cat => cat.id === categoryId);
-        if (category) {
-            category.addProduct(product);
-            this.saveCategories();
-        }
+    editCategory(id: number, newName: string) {
+      if (!newName.trim()) return; 
+    
+      const categories = this.getCategories(); 
+      const categoryIndex = categories.findIndex(cat => cat.id === id);
+    
+      if (categoryIndex !== -1) {
+        categories[categoryIndex].name = newName.trim(); 
+        localStorage.setItem('categories', JSON.stringify(categories)); 
+        this.categories = categories; 
+      }
     }
-    private saveCategories() {
+    
+    
+  
+    deleteCategory(id: number) {
+      this.categories = this.categories.filter(cat => cat.id !== id);
+      this.saveCategories();
+    }
+
+    
+    public saveCategories() {
         localStorage.setItem('categories', JSON.stringify(this.categories));
       }
-      private loadCategories() {
+      public loadCategories() {
         const data = localStorage.getItem('categories');
         if (data) {
           this.categories = JSON.parse(data).map((cat: any) => {
             const category = new Category(cat.id, cat.name);
-            category.products = cat.products.map((p: any) => new Product(p.id, p.name, p.quantity, p.price));
+            category.products = cat.products.map((p: any) => new Product(p.id, p.name, p.quantity, p.price, p.supplier, p.minimum));
             return category;
           });
         }

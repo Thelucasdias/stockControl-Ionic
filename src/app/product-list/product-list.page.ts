@@ -15,6 +15,7 @@ import { Category } from '../models/category.model';
 export class ProductListPage implements OnInit {
   categories: Category[] = [];
   newCategory = new FormControl('');
+  editCategoryName = new FormControl('');
 
   constructor(private inventoryService: InventoryService) {}
 
@@ -33,5 +34,20 @@ export class ProductListPage implements OnInit {
       this.newCategory.reset(); 
       this.loadCategories();
     }
+  }
+
+  editCategory(id: number) {
+    const newName = prompt("Digite o novo nome da categoria:");
+    
+    if (newName && newName.trim()) {
+      this.inventoryService.editCategory(id, newName.trim());
+      this.loadCategories();
+    }
+  
+  }
+
+  deleteCategory(id: number) {
+    this.inventoryService.deleteCategory(id);
+    this.loadCategories();
   }
 }

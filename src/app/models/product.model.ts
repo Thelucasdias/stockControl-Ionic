@@ -1,9 +1,11 @@
 export class Product {
     constructor(
-      public id: string,
+      public id: number,
       public name: string,
       public quantity: number,
-      public price: number
+      public price: number,
+      public supplier : string,
+      public minimum : number
     ) {}
   }
   
