@@ -22,13 +22,13 @@ export class StockService {
     return category ? category.products : [];
   }
 
-  updateProductQuantity(categoryId: number, productId: number, change: number) {
+  updateProductQuantity(categoryId: number, productId: string, change: number) {
     const category = this.categories.find(cat => cat.id === categoryId);
     if (category) {
       const product = category.products.find((p: Product) => p.id === productId);
       if (product) {
         product.quantity += change;
-        if (product.quantity < 0) product.quantity = 0;
+        if (product.quantity < 0) product.quantity = 0; 
         this.inventoryService.saveCategories();
       }
     }

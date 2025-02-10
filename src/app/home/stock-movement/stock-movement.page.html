@@ -1,47 +1,9 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Movimentação de Estoque</ion-title>
+    <ion-title>Cadastrar Produto</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <form [formGroup]="stockForm" (ngSubmit)="updateStock()">
-
-
-    <ion-item>
-      <ion-label>Categoria</ion-label>
-      <ion-select [(ngModel)]="selectedCategoryId" (ionChange)="onCategoryChange()">
-        <ion-select-option *ngFor="let category of categories" [value]="category.id">
-          {{ category.name }}
-        </ion-select-option>
-      </ion-select>
-    </ion-item>
-
-
-    <ion-item>
-      <ion-label position="floating">Quantidade</ion-label>
-      <ion-input type="number" formControlName="quantity"></ion-input>
-    </ion-item>
-
-    
-    <ion-list>
-      <ion-radio-group formControlName="type"> 
-        <ion-item>
-          <ion-label>Entrada</ion-label>
-          <ion-radio slot="start" value="entry"></ion-radio>
-        </ion-item>
-        <ion-item>
-          <ion-label>Saída</ion-label>
-          <ion-radio slot="start" value="exit"></ion-radio>
-        </ion-item>
-      </ion-radio-group>
-    </ion-list>
-
-
-    <!-- Botão de Atualizar Estoque -->
-    <ion-button expand="full" type="submit" [disabled]="stockForm.invalid">
-      Atualizar Estoque
-    </ion-button>
-
-  </form>
+  <app-product-form></app-product-form>
 </ion-content>

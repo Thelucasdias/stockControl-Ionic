@@ -24,5 +24,20 @@
         <ion-icon slot="end" name="trash-outline"></ion-icon>
       </ion-button>
     </ion-item>
+
+    <ion-list *ngFor="let category of categories">
+      <ion-list-header>
+        Categoria: {{ category.name }}
+      </ion-list-header>
+      
+      <ion-item *ngFor="let product of getProductsByCategory(category.id)">
+        <ion-label>
+          <h2>{{ product.name }}</h2>
+          <p>Preço: R$ {{ product.price | number:'1.2-2' }}</p>
+          <p>Quantidade: {{ product.quantity }}</p>
+          <p *ngIf="product.supplier">Fornecedor: {{ product.supplier }}</p>
+        </ion-label>        
+      </ion-item>
+    </ion-list>
   </ion-list>
 </ion-content>
