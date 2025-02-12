@@ -31,6 +31,6 @@ export const routes: Routes = [
     path: 'home/stock-movement',
     loadComponent: () => import('./home/stock-movement/stock-movement.page').then( m => m.StockMovementPage)
   },
-  
+    
   
 ];

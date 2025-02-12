@@ -17,6 +17,26 @@ export class InventoryService {
         this.categories.push(newCategory);
         this.saveCategories();
     }
+
+    updateProduct(categoryId: number, updatedProduct: Product): void {
+      const categoryIndex = this.categories.findIndex(cat => cat.id === categoryId);
+  
+      if (categoryIndex !== -1) {
+          const productIndex = this.categories[categoryIndex].products.findIndex(p => p.id === updatedProduct.id);
+  
+          if (productIndex !== -1) {
+             
+              this.categories[categoryIndex].products[productIndex] = updatedProduct;
+              this.saveCategories(); 
+              console.log("Produto atualizado com sucesso!");
+          } else {
+              console.warn("Produto não encontrado na categoria!");
+          }
+      } else {
+          console.warn("Categoria não encontrada!");
+      }
+  }
+  
     editCategory(id: number, newName: string) {
       if (!newName.trim()) return; 
     
@@ -28,16 +48,11 @@ export class InventoryService {
         localStorage.setItem('categories', JSON.stringify(categories)); 
         this.categories = categories; 
       }
-    }
-    
-    
-  
+    }  
     deleteCategory(id: number) {
       this.categories = this.categories.filter(cat => cat.id !== id);
       this.saveCategories();
-    }
-
-    
+    }    
     public saveCategories() {
         localStorage.setItem('categories', JSON.stringify(this.categories));
       }

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormControl } from '@angular/forms';
-import { InventoryService } from '../services/inventory.service';
-import { Category } from '../models/category.model';
+import { ReactiveFormsModule } from '@angular/forms';
 import { StockService } from '../services/stock.service';
 import { Product } from '../models/product.model';
+import { InventoryService } from '../services/inventory.service';
+import { Category } from '../models/category.model';
 
 @Component({
   selector: 'app-product-list',
@@ -16,11 +16,7 @@ import { Product } from '../models/product.model';
 })
 export class ProductListPage implements OnInit {
   categories: Category[] = [];
-  
-  newCategory = new FormControl('');
-  editCategoryName = new FormControl('');
-
-  constructor(private inventoryService: InventoryService, private stockService: StockService) { }
+  constructor(private stockService: StockService, private inventoryService: InventoryService) { }
 
   ngOnInit() {
     this.loadCategories();
@@ -29,32 +25,16 @@ export class ProductListPage implements OnInit {
   loadCategories() {
     this.categories = this.inventoryService.getCategories();
   }
-  
+
   getProductsByCategory(categoryId: number): Product[] {
     return this.stockService.getProductsByCategory(categoryId);
   }
 
-  addCategory() {
-    const categoryName = this.newCategory.value?.trim();
-    if (categoryName) {
-      this.inventoryService.addCategory(categoryName);
-      this.newCategory.reset();
-      this.loadCategories();
-    }
-  }
-
-  editCategory(id: number) {
-    const newName = prompt("Digite o novo nome da categoria:");
-
+  editProduct(product: Product, categoryId: number) {
+    const newName = prompt("Novo nome do produto:", product.name);
     if (newName && newName.trim()) {
-      this.inventoryService.editCategory(id, newName.trim());
-      this.loadCategories();
+      product.name = newName.trim();
+      this.inventoryService.updateProduct(categoryId, product);
     }
-
-  }
-  
-  deleteCategory(id: number) {
-    this.inventoryService.deleteCategory(id);
-    this.loadCategories();
   }
 }

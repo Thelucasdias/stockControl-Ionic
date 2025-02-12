@@ -28,7 +28,8 @@ export class ProductFormComponent implements OnInit {
       minimum: [null],
       categoryId: [null, Validators.required],
       productId: [''],
-      quantity: [1, [Validators.required, Validators.min(1)]]
+      quantity: [1, [Validators.required, Validators.min(1)]],
+      date: [new Date(), Validators.required]
     });
   }
 
@@ -45,11 +46,11 @@ export class ProductFormComponent implements OnInit {
 
   updateStock() {
     if (this.productForm.valid) {
-      const { categoryId, productId, name, price, supplier, minimum, quantity } = this.productForm.value;
+      const { categoryId, productId, name, price, supplier, minimum, quantity, date } = this.productForm.value;
       let product = this.products.find(p => p.id === productId);
       
       if (!product) {
-        product = new Product(crypto.randomUUID(), name, 0, price, supplier || '', minimum ?? 0);
+        product = new Product(crypto.randomUUID(), name, 0, price, supplier || '', minimum ?? 0, date);
         this.stockService.addProduct(categoryId, product);
       }
       

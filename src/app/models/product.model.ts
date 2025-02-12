@@ -5,7 +5,8 @@ export class Product {
       public quantity: number,
       public price: number,
       public supplier : string,
-      public minimum : number
+      public minimum : number,
+      public date: Date = new Date()  
     ) {}
   }
   
