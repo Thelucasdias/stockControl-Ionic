@@ -58,7 +58,16 @@ export class ProductFormComponent implements OnInit {
       this.onCategoryChange();
       alert(`Estoque atualizado com sucesso!`);
       this.stockUpdated.emit();
-      this.productForm.reset();
+      this.productForm.reset({
+        name: '',
+        price: null,
+        supplier: '',
+        minimum: null,
+        categoryId: null,
+        productId: '',
+        quantity: 1,
+        date: new Date()
+      });
     }
   }
 }

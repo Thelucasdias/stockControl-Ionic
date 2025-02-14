@@ -16,9 +16,10 @@
       <ion-item *ngFor="let product of getProductsByCategory(category.id)">
         <ion-label>
           <h2>{{ product.name }}</h2>
-          <p>Preço: R$ {{ product.price | number:'1.2-2' }}</p>
+          <p>Preço: {{ product.price | currency }}</p>
           <p>Quantidade: {{ product.quantity }}</p>
           <p *ngIf="product.supplier">Fornecedor: {{ product.supplier }}</p>
+          <p>Total: {{ product.total | currency }}</p>
         </ion-label>
 
         <ion-button color="tertiary" (click)="editProduct(product, category.id)">

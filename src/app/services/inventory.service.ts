@@ -29,12 +29,7 @@ export class InventoryService {
               this.categories[categoryIndex].products[productIndex] = updatedProduct;
               this.saveCategories(); 
               console.log("Produto atualizado com sucesso!");
-          } else {
-              console.warn("Produto não encontrado na categoria!");
-          }
-      } else {
-          console.warn("Categoria não encontrada!");
-      }
+          }}
   }
   
     editCategory(id: number, newName: string) {

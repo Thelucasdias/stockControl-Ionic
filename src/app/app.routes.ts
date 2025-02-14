@@ -28,9 +28,14 @@ export const routes: Routes = [
     loadComponent: () => import('./product-list/product-list.page').then( m => m.ProductListPage)
   },
   {
-    path: 'home/stock-movement',
-    loadComponent: () => import('./home/stock-movement/stock-movement.page').then( m => m.StockMovementPage)
+    path: 'product-add',
+    loadComponent: () => import('./product-add/product-add.page').then( m => m.ProductAddPage)
   },
+  {
+    path: 'categories',
+    loadComponent: () => import('./categories/categories.page').then( m => m.CategoriesPage)
+  },
+  
     
   
 ];

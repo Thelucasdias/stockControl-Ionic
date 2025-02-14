@@ -8,5 +8,8 @@ export class Product {
       public minimum : number,
       public date: Date = new Date()  
     ) {}
+    get total(): number {
+      return this.quantity * this.price;
+    }
   }
   
