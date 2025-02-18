@@ -22,7 +22,7 @@
           <p>Total: {{ product.total | currency }}</p>
         </ion-label>
 
-        <ion-button color="tertiary" (click)="editProduct(product, category.id)">
+        <ion-button color="tertiary" (click)="openEditModal(product, category.id)">
           Editar
           <ion-icon slot="end" name="create-outline"></ion-icon>
         </ion-button>

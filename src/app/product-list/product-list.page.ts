@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StockService } from '../services/stock.service';
 import { Product } from '../models/product.model';
 import { InventoryService } from '../services/inventory.service';
 import { Category } from '../models/category.model';
+import { ModalController, IonicModule } from '@ionic/angular';
+import { EditProductModalComponent } from '../shared/edit-product-modal/edit-product-modal.component';
+
 
 @Component({
   selector: 'app-product-list',
@@ -16,7 +18,10 @@ import { Category } from '../models/category.model';
 })
 export class ProductListPage implements OnInit {
   categories: Category[] = [];
-  constructor(private stockService: StockService, private inventoryService: InventoryService) { }
+  constructor(private stockService: StockService,
+    private inventoryService: InventoryService,
+    private modalCtrl: ModalController,
+  ) { }
 
   ngOnInit() {
     this.loadCategories();
@@ -30,11 +35,21 @@ export class ProductListPage implements OnInit {
     return this.stockService.getProductsByCategory(categoryId);
   }
 
-  editProduct(product: Product, categoryId: number) {
-    const newName = prompt("Novo nome do produto:", product.name);
-    if (newName && newName.trim()) {
-      product.name = newName.trim();
-      this.inventoryService.updateProduct(categoryId, product);
+  async openEditModal(product: Product, categoryId: number) {
+    const modal = await this.modalCtrl.create({
+      component: EditProductModalComponent,
+      componentProps: { product: { ...product }, categoryId }
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if (data && data.updatedProduct) {
+      this.inventoryService.updateProduct(categoryId, data.updatedProduct);
+      this.loadCategories();
     }
   }
+
+
+
 }

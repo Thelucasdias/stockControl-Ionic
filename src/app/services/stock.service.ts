@@ -12,12 +12,12 @@ export class StockService {
   }
 
   private loadCategoriesFromInventory() {
-    this.inventoryService.loadCategories(); 
+    this.inventoryService.loadCategories();
     this.categories = this.inventoryService.getCategories();
   }
 
 
-   getProductsByCategory(categoryId: number): Product[] {
+  getProductsByCategory(categoryId: number): Product[] {
     const category = this.categories.find(cat => cat.id === categoryId);
     return category ? category.products : [];
   }
@@ -28,7 +28,7 @@ export class StockService {
       const product = category.products.find((p: Product) => p.id === productId);
       if (product) {
         product.quantity += change;
-        if (product.quantity < 0) product.quantity = 0; 
+        if (product.quantity < 0) product.quantity = 0;
         this.inventoryService.saveCategories();
       }
     }
@@ -36,8 +36,17 @@ export class StockService {
   addProduct(categoryId: number, product: Product) {
     const category = this.categories.find(cat => cat.id === categoryId);
     if (category) {
-        category.addProduct(product);
-        this.inventoryService.saveCategories();
+      category.addProduct(product);
+      this.inventoryService.saveCategories();
     }
-}
+  }
+  deleteProduct(categoryId: number, productId: string) {
+    const category = this.categories.find(cat => cat.id === categoryId);
+    if (category) {
+      category.products = category.products.filter((p: Product) => p.id !== productId);      
+      this.inventoryService.saveCategories();
+    }
+  }
+
+
 }
