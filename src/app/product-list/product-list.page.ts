@@ -7,6 +7,8 @@ import { InventoryService } from '../services/inventory.service';
 import { Category } from '../models/category.model';
 import { ModalController, IonicModule } from '@ionic/angular';
 import { EditProductModalComponent } from '../shared/edit-product-modal/edit-product-modal.component';
+import { InputOutputComponent } from '../shared/input-output/input-output.component';
+
 
 
 @Component({
@@ -21,7 +23,7 @@ export class ProductListPage implements OnInit {
   constructor(private stockService: StockService,
     private inventoryService: InventoryService,
     private modalCtrl: ModalController,
-  ) { }
+      ) { }
 
   ngOnInit() {
     this.loadCategories();
@@ -49,6 +51,22 @@ export class ProductListPage implements OnInit {
       this.loadCategories();
     }
   }
+
+  async openInputOutputModal(product: Product, categoryId: number) {
+    const modal = await this.modalCtrl.create({
+      component: InputOutputComponent,
+      componentProps: { product: { ...product }, categoryId }
+    });
+  
+    await modal.present();
+  
+    const { data } = await modal.onDidDismiss();
+    if (data && data.updatedProduct) {
+      this.inventoryService.updateProduct(categoryId, data.updatedProduct);
+      this.loadCategories();
+    }
+  }
+  
 
 
 

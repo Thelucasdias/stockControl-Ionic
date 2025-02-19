@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Entrada/Saída</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-label>Tipo de Transação</ion-label>
+    <ion-select [(ngModel)]="transactionType">
+      <ion-select-option value="entrada">Entrada</ion-select-option>
+      <ion-select-option value="saida">Saída</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Quantidade</ion-label>
+    <ion-input type="number" [(ngModel)]="quantity"></ion-input>
+  </ion-item>
+  
+  <ion-item *ngIf="transactionType === 'saida'">
+    <ion-label position="floating">Cliente</ion-label>
+    <ion-input type="text" [(ngModel)]="client"></ion-input>
+  </ion-item>
+
+  <ion-button expand="full" (click)="confirmTransaction()">Confirmar</ion-button>
+</ion-content>
