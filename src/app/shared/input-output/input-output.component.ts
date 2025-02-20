@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ModalController, IonicModule } from '@ionic/angular';
 import { Product } from 'src/app/models/product.model';
@@ -12,15 +12,14 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, IonicModule, FormsModule]
 })
-export class InputOutputComponent {
+export class InputOutputComponent  {
   @Input() product!: Product;
   @Input() categoryId!: number;
-
+  
   productForm: FormGroup;
 
   transactionType: 'entrada' | 'saida' = 'entrada';
   quantity: number = 0;
-  value: number = 0;
   client: string = '';
 
 
@@ -28,13 +27,9 @@ export class InputOutputComponent {
     this.productForm = new FormGroup({
       price: new FormControl(0),
       quantity: new FormControl(0),
+      
     });
-   }
-
-  ngOnInit() {
-    this.productForm.patchValue(this.product);
-  }
-
+   }  
   
 
   closeModal() {
@@ -43,21 +38,14 @@ export class InputOutputComponent {
 
   confirmTransaction() {
     const updatedProduct = { ...this.product };
-
-    
-
-    if (this.transactionType === 'entrada') {
+      if (this.transactionType === 'entrada') {
       updatedProduct.quantity += this.quantity;
-
-   
     } else {
       updatedProduct.quantity -= this.quantity;
     }
+  updatedProduct.price = this.productForm.value.price || updatedProduct.price;
+  updatedProduct.total = updatedProduct.quantity * updatedProduct.price;
 
-    const total = { 
-      total: this.productForm.value.price * this.productForm.value.quantity 
-    };
-
-    this.modalCtrl.dismiss({ updatedProduct, total});
-  }
+    this.modalCtrl.dismiss({ updatedProduct});
+  }  
 }

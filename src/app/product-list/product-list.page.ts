@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StockService } from '../services/stock.service';
@@ -23,6 +23,7 @@ export class ProductListPage implements OnInit {
   constructor(private stockService: StockService,
     private inventoryService: InventoryService,
     private modalCtrl: ModalController,
+    private cdRef: ChangeDetectorRef
       ) { }
 
   ngOnInit() {
@@ -51,6 +52,7 @@ export class ProductListPage implements OnInit {
       this.loadCategories();
     }
   }
+  
 
   async openInputOutputModal(product: Product, categoryId: number) {
     const modal = await this.modalCtrl.create({
@@ -63,11 +65,9 @@ export class ProductListPage implements OnInit {
     const { data } = await modal.onDidDismiss();
     if (data && data.updatedProduct) {
       this.inventoryService.updateProduct(categoryId, data.updatedProduct);
+      this.cdRef.detectChanges();
       this.loadCategories();
     }
   }
-  
-
-
 
 }

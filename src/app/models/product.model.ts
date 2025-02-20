@@ -6,10 +6,9 @@ export class Product {
       public price: number,
       public supplier : string,
       public minimum : number,
-      public date: Date = new Date()  
+      public date: Date = new Date(),
+      
     ) {}
-    get total(): number {
-      return this.quantity * this.price;
-    }
+    total: number = this.quantity * this.price;
   }
   
