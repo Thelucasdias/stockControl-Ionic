@@ -14,6 +14,7 @@ import { StockService } from 'src/app/services/stock.service';
   imports: [IonicModule, CommonModule, ReactiveFormsModule]
 })
 export class ProductFormComponent implements OnInit {
+  product: Product | null = null;
   @Output() stockUpdated = new EventEmitter<void>();
 
   productForm: FormGroup;
@@ -41,33 +42,39 @@ export class ProductFormComponent implements OnInit {
     const categoryId = this.productForm.get('categoryId')?.value;
     if (categoryId) {
       this.products = this.stockService.getProductsByCategory(categoryId);
+      this.product = null; 
+      this.productForm.patchValue({productId: ''})
     }
   }
 
   updateStock() {
     if (this.productForm.valid) {
       const { categoryId, productId, name, price, supplier, minimum, quantity, date } = this.productForm.value;
-      let product = this.products.find(p => p.id === productId);
-      
-      if (!product) {
-        product = new Product(crypto.randomUUID(), name, 0, price, supplier || '', minimum ?? 0, date);
-        this.stockService.addProduct(categoryId, product);
+      this.product = this.products.find(p => p.id === productId) ?? null;
+
+      if (!this.product) { // Novo produto
+        this.product = new Product(
+          crypto.randomUUID(),
+          name,
+          quantity,
+          price,
+          supplier || '',
+          minimum ?? 0,
+          date,
+          quantity
+        );
+        this.stockService.addProduct(categoryId, this.product); // Salva o novo produto
+      } else { // Produto existente
+        // Atualize as propriedades do produto existente
+        this.product.name = name;
+        this.product.price = price;
+        this.product.supplier = supplier || '';
+        this.product.minimum = minimum ?? 0;
+        this.product.quantity = quantity;
+        this.product.date = date;
+
+        this.inventoryService.updateProduct(categoryId, this.product); // Salva as alterações no produto existente
       }
-      
-      this.stockService.updateProductQuantity(categoryId, product.id, quantity);
-      this.onCategoryChange();
-      alert(`Estoque atualizado com sucesso!`);
-      this.stockUpdated.emit();
-      this.productForm.reset({
-        name: '',
-        price: null,
-        supplier: '',
-        minimum: null,
-        categoryId: null,
-        productId: '',
-        quantity: 1,
-        date: new Date()
-      });
     }
   }
 }

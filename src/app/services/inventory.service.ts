@@ -56,7 +56,7 @@ export class InventoryService {
         if (data) {
           this.categories = JSON.parse(data).map((cat: any) => {
             const category = new Category(cat.id, cat.name);
-            category.products = cat.products.map((p: any) => new Product(p.id, p.name, p.quantity, p.price, p.supplier, p.minimum));
+            category.products = cat.products.map((p: any) => new Product(p.id, p.name, p.quantity, p.price, p.supplier, p.minimum, p.date, p.quantity ));
             return category;
           });
         }

@@ -22,13 +22,17 @@ export class StockService {
     return category ? category.products : [];
   }
 
-  updateProductQuantity(categoryId: number, productId: string, change: number) {
+  updateProductQuantity(categoryId: number, productId: string, product: Product) {
     const category = this.categories.find(cat => cat.id === categoryId);
     if (category) {
-      const product = category.products.find((p: Product) => p.id === productId);
-      if (product) {
-        product.quantity += change;
-        if (product.quantity < 0) product.quantity = 0;
+      const existingProduct = category.products.find((p: Product) => p.id === product.id);
+      if (existingProduct) {
+        existingProduct.name = product.name;
+        existingProduct.price = product.price;
+        existingProduct.supplier = product.supplier;
+        existingProduct.minimum = product.minimum;
+        existingProduct.date = product.date;
+
         this.inventoryService.saveCategories();
       }
     }
