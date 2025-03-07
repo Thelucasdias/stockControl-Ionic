@@ -31,7 +31,7 @@ export class ProductFormComponent implements OnInit {
       productId: [''],
       quantity: [1, [Validators.required, Validators.min(1)]],
       date: [new Date(), Validators.required],
-      client: ['', Validators.required],
+      client: [''],
     });
   }
 
@@ -75,8 +75,18 @@ export class ProductFormComponent implements OnInit {
           quantity
         );
         this.stockService.addProduct(categoryId, this.product);
-        this.productForm.reset();
-        this.presentToast('Produto adicionado!')
+        this.presentToast('Produto adicionado!');
+        this.productForm.reset({
+          name: '',
+          price: null,
+          supplier: '',
+          minimum: null,
+          categoryId: null,
+          productId: '',
+          quantity: 1,
+          date: new Date(), 
+          client: '',
+        });
       }
     }
   }
