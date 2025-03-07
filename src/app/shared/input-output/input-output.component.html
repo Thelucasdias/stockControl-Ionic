@@ -23,7 +23,7 @@
   
   <ion-item *ngIf="transactionType === 'saida'">
     <ion-label position="floating">Cliente</ion-label>
-    <ion-input type="text" [(ngModel)]="client"></ion-input>
+    <ion-input type="string" [(ngModel)]="client"></ion-input>
   </ion-item>
 
   <ion-button expand="full" (click)="confirmTransaction()">Confirmar</ion-button>

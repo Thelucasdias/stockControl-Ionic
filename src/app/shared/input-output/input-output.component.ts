@@ -28,8 +28,7 @@ export class InputOutputComponent {
     this.productForm = new FormGroup({
       price: new FormControl(0),
       quantity: new FormControl(0),
-      client: new FormControl()
-
+      client: new FormControl('')
     });
   }
 
@@ -41,18 +40,21 @@ export class InputOutputComponent {
   confirmTransaction() {    
     const quantity = this.quantity;
     const date = new Date();
+    const client = this.client;
     
     if (this.transactionType === 'entrada') {
       this.product.stockIn.push({ quantity, date });
       this.product.quantity += quantity;
+      
     } else {
       if (quantity > this.product.quantity) {
         throw new Error("Sem estoque suficiente!");
       }
-      this.product.stockOut.push({ quantity, date, client: this.productForm.value.client || '' });
+      this.product.stockOut.push({ quantity, date, client});
       this.product.quantity -= quantity;
-    }
-  
+      }
+    
+
     this.product.price = this.productForm.value.price || this.product.price;
     const updatedProduct = { ...this.product, total: this.product.quantity * this.product.price };
 

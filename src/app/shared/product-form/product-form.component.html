@@ -1,6 +1,6 @@
 <ion-card>
     <ion-card-content>
-    <form [formGroup]="productForm" (ngSubmit)="updateStock()">
+    <form [formGroup]="productForm" (ngSubmit)="createProduct()">
       <ion-item>
         <ion-label>Categoria</ion-label>
         <ion-select formControlName="categoryId" (ionChange)="onCategoryChange()">

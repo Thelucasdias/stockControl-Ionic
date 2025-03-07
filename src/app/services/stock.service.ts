@@ -47,7 +47,7 @@ export class StockService {
   deleteProduct(categoryId: number, productId: string) {
     const category = this.categories.find(cat => cat.id === categoryId);
     if (category) {
-      category.products = category.products.filter((p: Product) => p.id !== productId);      
+      category.products = category.products.filter((p: Product) => p.id !== productId);
       this.inventoryService.saveCategories();
     }
   }

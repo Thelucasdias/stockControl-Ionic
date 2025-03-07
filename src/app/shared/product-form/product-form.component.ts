@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { Product } from '../../models/product.model';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { StockService } from 'src/app/services/stock.service';
@@ -21,7 +21,7 @@ export class ProductFormComponent implements OnInit {
   categories: any[] = [];
   products: Product[] = [];
 
-  constructor(private fb: FormBuilder, private inventoryService: InventoryService, private stockService: StockService) {
+  constructor(private fb: FormBuilder, private inventoryService: InventoryService, private stockService: StockService, private toastCtrl: ToastController) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       price: [null, [Validators.required, Validators.min(0.01)]],
@@ -30,8 +30,19 @@ export class ProductFormComponent implements OnInit {
       categoryId: [null, Validators.required],
       productId: [''],
       quantity: [1, [Validators.required, Validators.min(1)]],
-      date: [new Date(), Validators.required]
+      date: [new Date(), Validators.required],
+      client: ['', Validators.required],
     });
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2000,
+      position: 'top',
+      color: 'success'
+    });
+    await toast.present();
   }
 
   ngOnInit() {
@@ -42,17 +53,17 @@ export class ProductFormComponent implements OnInit {
     const categoryId = this.productForm.get('categoryId')?.value;
     if (categoryId) {
       this.products = this.stockService.getProductsByCategory(categoryId);
-      this.product = null; 
-      this.productForm.patchValue({productId: ''})
+      this.product = null;
+      this.productForm.patchValue({ productId: '' })
     }
   }
 
-  updateStock() {
+  createProduct() {
     if (this.productForm.valid) {
       const { categoryId, productId, name, price, supplier, minimum, quantity, date } = this.productForm.value;
       this.product = this.products.find(p => p.id === productId) ?? null;
 
-      if (!this.product) { // Novo produto
+      if (!this.product) {
         this.product = new Product(
           crypto.randomUUID(),
           name,
@@ -63,17 +74,9 @@ export class ProductFormComponent implements OnInit {
           date,
           quantity
         );
-        this.stockService.addProduct(categoryId, this.product); // Salva o novo produto
-      } else { // Produto existente
-        // Atualize as propriedades do produto existente
-        this.product.name = name;
-        this.product.price = price;
-        this.product.supplier = supplier || '';
-        this.product.minimum = minimum ?? 0;
-        this.product.quantity = quantity;
-        this.product.date = date;
-
-        this.inventoryService.updateProduct(categoryId, this.product); // Salva as alterações no produto existente
+        this.stockService.addProduct(categoryId, this.product);
+        this.productForm.reset();
+        this.presentToast('Produto adicionado!')
       }
     }
   }
