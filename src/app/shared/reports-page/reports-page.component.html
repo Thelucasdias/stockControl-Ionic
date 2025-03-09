@@ -1,3 +1,32 @@
-<p>
-  reports-page works!
-</p>
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Resumo do Estoque</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>
+        <strong>Valor total do estoque:</strong>
+        {{ totalStockValue | currency }}
+      </p>
+      <p><strong>Total de Entradas:</strong> {{ totalStockIn }}</p>
+      <p><strong>Total de Saídas:</strong> {{ totalStockOut }}</p>
+      <p><strong>Saldo (Saídas - Entradas):</strong> {{ balance }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Produtos</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let product of products">
+      <ion-label>
+        <h2>{{ product.name }}</h2>
+        <p>Quantidade em estoque: {{ product.quantity }}</p>
+        <p>
+          Valor total: $
+          {{ product.quantity * product.price | number: "1.2-2" }}
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
