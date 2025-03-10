@@ -1,6 +1,11 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { IonicModule, ToastController } from '@ionic/angular';
 import { Product } from '../../models/product.model';
 import { InventoryService } from 'src/app/services/inventory.service';
@@ -11,7 +16,7 @@ import { StockService } from 'src/app/services/stock.service';
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, ReactiveFormsModule]
+  imports: [IonicModule, CommonModule, ReactiveFormsModule],
 })
 export class ProductFormComponent implements OnInit {
   product: Product | null = null;
@@ -21,7 +26,12 @@ export class ProductFormComponent implements OnInit {
   categories: any[] = [];
   products: Product[] = [];
 
-  constructor(private fb: FormBuilder, private inventoryService: InventoryService, private stockService: StockService, private toastCtrl: ToastController) {
+  constructor(
+    private fb: FormBuilder,
+    private inventoryService: InventoryService,
+    private stockService: StockService,
+    private toastCtrl: ToastController,
+  ) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       price: [null, [Validators.required, Validators.min(0.01)]],
@@ -32,6 +42,7 @@ export class ProductFormComponent implements OnInit {
       quantity: [1, [Validators.required, Validators.min(1)]],
       date: [new Date(), Validators.required],
       client: [''],
+      salePrice: [null],
     });
   }
 
@@ -40,7 +51,7 @@ export class ProductFormComponent implements OnInit {
       message,
       duration: 2000,
       position: 'top',
-      color: 'success'
+      color: 'success',
     });
     await toast.present();
   }
@@ -54,14 +65,23 @@ export class ProductFormComponent implements OnInit {
     if (categoryId) {
       this.products = this.stockService.getProductsByCategory(categoryId);
       this.product = null;
-      this.productForm.patchValue({ productId: '' })
+      this.productForm.patchValue({ productId: '' });
     }
   }
 
   createProduct() {
     if (this.productForm.valid) {
-      const { categoryId, productId, name, price, supplier, minimum, quantity, date } = this.productForm.value;
-      this.product = this.products.find(p => p.id === productId) ?? null;
+      const {
+        categoryId,
+        productId,
+        name,
+        price,
+        supplier,
+        minimum,
+        quantity,
+        date,
+      } = this.productForm.value;
+      this.product = this.products.find((p) => p.id === productId) ?? null;
 
       if (!this.product) {
         this.product = new Product(
@@ -72,7 +92,7 @@ export class ProductFormComponent implements OnInit {
           supplier || '',
           minimum ?? 0,
           date,
-          quantity
+          quantity,
         );
         this.stockService.addProduct(categoryId, this.product);
         this.presentToast('Produto adicionado!');
@@ -84,8 +104,7 @@ export class ProductFormComponent implements OnInit {
           categoryId: null,
           productId: '',
           quantity: 1,
-          date: new Date(), 
-          client: '',
+          date: new Date(),
         });
       }
     }

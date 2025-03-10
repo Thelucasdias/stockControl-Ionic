@@ -5,8 +5,6 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  
-
   <ion-list *ngFor="let category of categories">
     <ion-item-group>
       <ion-item-divider>
@@ -22,14 +20,16 @@
           <p>Total: {{ product.total | currency }}</p>
         </ion-label>
 
-        <ion-button  (click)="openInputOutputModal(product, category.id)">Entrada/Saída</ion-button>
-
-        <ion-button color="tertiary" (click)="openEditModal(product, category.id)">
+        <ion-button (click)="openInputOutputModal(product, category.id)">
+          Entrada/Saída</ion-button
+        >
+        <ion-button
+          color="tertiary"
+          (click)="openEditModal(product, category.id)"
+        >
           Editar
           <ion-icon slot="end" name="create-outline"></ion-icon>
         </ion-button>
-        
-
       </ion-item>
     </ion-item-group>
   </ion-list>

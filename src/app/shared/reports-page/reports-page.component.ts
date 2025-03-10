@@ -39,10 +39,12 @@ export class ReportsPageComponent implements OnInit {
   }
   calculateTotalStockIn() {
     this.totalStockIn = this.products.reduce((acc, product) => {
-      const stockInTotal = product.stockIn.reduce((sum: number, entry: any) => {
-        return sum + entry.quantity;
-      }, 0);
-      return acc + stockInTotal;
+      const totalQuantity =
+        product.initialQuantity +
+        product.stockIn.reduce((sum: number, entry: any) => {
+          return sum + entry.quantity;
+        }, 0);
+      return acc + totalQuantity * product.price;
     }, 0);
   }
 
@@ -50,7 +52,7 @@ export class ReportsPageComponent implements OnInit {
     this.totalStockOut = this.products.reduce((acc, product) => {
       const stockOutTotal = product.stockOut.reduce(
         (sum: number, entry: any) => {
-          return sum + entry.quantity;
+          return sum + entry.quantity * entry.salePrice;
         },
         0,
       );

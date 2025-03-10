@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './input-output.component.html',
   styleUrls: ['./input-output.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, IonicModule, FormsModule]
+  imports: [CommonModule, ReactiveFormsModule, IonicModule, FormsModule],
 })
 export class InputOutputComponent {
   @Input() product!: Product;
@@ -22,43 +22,44 @@ export class InputOutputComponent {
   quantity: number = 0;
   client: string = '';
   date: Date | undefined;
-
+  salePrice: number = 0;
 
   constructor(private modalCtrl: ModalController) {
     this.productForm = new FormGroup({
       price: new FormControl(0),
       quantity: new FormControl(0),
-      client: new FormControl('')
+      client: new FormControl(''),
+      salePrice: new FormControl(0),
     });
   }
-
 
   closeModal() {
     this.modalCtrl.dismiss();
   }
 
-  confirmTransaction() {    
+  confirmTransaction() {
     const quantity = this.quantity;
     const date = new Date();
     const client = this.client;
-    
+    const salePrice = this.salePrice;
+
     if (this.transactionType === 'entrada') {
       this.product.stockIn.push({ quantity, date });
       this.product.quantity += quantity;
-      
     } else {
       if (quantity > this.product.quantity) {
-        throw new Error("Sem estoque suficiente!");
+        throw new Error('Sem estoque suficiente!');
       }
-      this.product.stockOut.push({ quantity, date, client});
+      this.product.stockOut.push({ quantity, date, client, salePrice });
       this.product.quantity -= quantity;
-      }
-    
+    }
 
     this.product.price = this.productForm.value.price || this.product.price;
-    const updatedProduct = { ...this.product, total: this.product.quantity * this.product.price };
+    const updatedProduct = {
+      ...this.product,
+      total: this.product.quantity * this.product.price,
+    };
 
     this.modalCtrl.dismiss({ updatedProduct });
   }
-  
 }

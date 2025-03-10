@@ -20,11 +20,18 @@
     <ion-label position="floating">Quantidade</ion-label>
     <ion-input type="number" [(ngModel)]="quantity"></ion-input>
   </ion-item>
-  
+
+  <ion-item *ngIf="transactionType === 'saida'">
+    <ion-label position="floating">Preço</ion-label>
+    <ion-input type="number" [(ngModel)]="salePrice"></ion-input>
+  </ion-item>
+
   <ion-item *ngIf="transactionType === 'saida'">
     <ion-label position="floating">Cliente</ion-label>
     <ion-input type="string" [(ngModel)]="client"></ion-input>
   </ion-item>
 
-  <ion-button expand="full" (click)="confirmTransaction()">Confirmar</ion-button>
+  <ion-button expand="full" (click)="confirmTransaction()"
+    >Confirmar</ion-button
+  >
 </ion-content>

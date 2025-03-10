@@ -5,7 +5,7 @@
     </ion-card-header>
     <ion-card-content>
       <p>
-        <strong>Valor total do estoque:</strong>
+        <strong>Valor total do estoque atual:</strong>
         {{ totalStockValue | currency }}
       </p>
       <p><strong>Total de Entradas:</strong> {{ totalStockIn }}</p>
@@ -13,7 +13,6 @@
       <p><strong>Saldo (Saídas - Entradas):</strong> {{ balance }}</p>
     </ion-card-content>
   </ion-card>
-
   <ion-list>
     <ion-list-header>
       <ion-label>Produtos</ion-label>
@@ -26,6 +25,28 @@
           Valor total: $
           {{ product.quantity * product.price | number: "1.2-2" }}
         </p>
+        <h3>Entradas:</h3>
+        <ion-list *ngIf="product.stockIn.length > 0">
+          <ion-item *ngFor="let entry of product.stockIn">
+            <ion-label>
+              <p>Quantidade: {{ entry.quantity }}</p>
+              <p>Data: {{ entry.date | date }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <p *ngIf="product.stockIn.length === 0">Nenhuma entrada registrada.</p>
+        <h3>Saídas:</h3>
+        <ion-list *ngIf="product.stockOut.length > 0">
+          <ion-item *ngFor="let entry of product.stockOut">
+            <ion-label>
+              <p>Quantidade: {{ entry.quantity }}</p>
+              <p>Data: {{ entry.date | date }}</p>
+              <p>Cliente: {{ entry.client }}</p>
+              <p>Preço de saída: {{ entry.salePrice | currency }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <p *ngIf="product.stockOut.length === 0">Nenhuma saída registrada.</p>
       </ion-label>
     </ion-item>
   </ion-list>
