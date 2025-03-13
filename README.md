@@ -35,4 +35,4 @@ O **Stock-control** é um aplicativo desenvolvido com **Ionic** e **Angular** qu
 
 ## Objetivo do Projeto
 
-O Stock Control foi criado como parte de um estudo sobre desenvolvimento de aplicativos multi-plataforma com Ionic e Angular. No entanto, o foco sempre foi resolver um problema real enfrentado por pequenos empreendedores: a falta de controle sobre estoques e finanças. O aplicativo combina conceitos didáticos com funcionalidades práticas, tornando-se uma ferramenta útil tanto para aprendizado quanto futuramente para uso no dia a dia.
+O Stock Control foi criado como parte de um estudo sobre desenvolvimento de aplicativos multi-plataforma com Ionic e Angular. No entanto, o foco sempre foi resolver um problema real enfrentado por pequenos empreendedores: a falta de controle sobre estoques e finanças. O aplicativo combina conceitos didáticos com funcionalidades práticas, tornando-se uma ferramenta útil tanto para aprendizado quanto futuramente para uso no dia a dia!
